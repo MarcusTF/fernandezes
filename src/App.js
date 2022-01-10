@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useQuery } from "graphql-hooks"
+import { GET_ALL_STOPS } from "./context/graphql/Queries"
+
+import "./App.scss"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const { data, loading, error } = useQuery(GET_ALL_STOPS)
+  return loading ? (
+    <div>loading...</div>
+  ) : (
+    <div className='App'>
+      {data?.stops?.nodes?.map?.(e => (
+        <div>
+          {e?.images?.photos?.map?.(p => (
+            <img src={p.mediaItemUrl} />
+          ))}
+        </div>
+      ))}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
