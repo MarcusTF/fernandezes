@@ -1,7 +1,11 @@
-import { GraphQLProvider } from "./graphql"
+import { GraphQLProvider, MapProvider } from "./"
 
 const GlobalContextProvider = ({ children }) => {
-  return <GraphQLProvider>{children}</GraphQLProvider>
+  return (
+    <GraphQLProvider>
+      <MapProvider>{children}</MapProvider>
+    </GraphQLProvider>
+  )
 }
 
 export default GlobalContextProvider
