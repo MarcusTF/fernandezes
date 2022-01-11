@@ -3,6 +3,12 @@ export const GET_ALL_STOPS = `
     stops {
       nodes {
         id
+        time {
+          when
+          startDate
+          endDate
+          date
+        }
         location {
           lat
           lng
