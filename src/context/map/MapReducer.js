@@ -4,6 +4,11 @@ import { keys } from "./MapContext"
 export const initialState = {
   center: [0, 0],
   zoom: 3,
+  stops: {
+    data: undefined,
+    loading: false,
+    errors: undefined,
+  },
 }
 
 export const MapReducer = (state, action) => {
@@ -20,6 +25,9 @@ export const MapReducer = (state, action) => {
     }
     case keys.SET_MAP: {
       return { ...state, zoom: payload.zoom, center: payload.coords }
+    }
+    case keys.SET_STOPS: {
+      return { ...state, stops: payload }
     }
     default:
       return state

@@ -1,7 +1,8 @@
 export const GET_ALL_STOPS = `
-  query getAllStops {
-    stops {
+  query getAllStops($search: String) {
+    stops(where: {search: $search}) {
       nodes {
+        title
         id
         time {
           when
