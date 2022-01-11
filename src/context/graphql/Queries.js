@@ -3,16 +3,10 @@ export const GET_ALL_STOPS = `
     stops {
       nodes {
         id
-        images {
-          photos {
-            id
-            mediaItemUrl
-            title
-          }
-        }
         location {
           lat
           lng
+          address
         }
       }
     }
