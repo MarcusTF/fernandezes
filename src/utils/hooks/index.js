@@ -3,7 +3,7 @@ import { Marker } from "pigeon-maps"
 import { useCallback, useContext } from "react"
 import { MapContext } from "../../context/map"
 
-const Stops = ({ stops }) => {
+export const useGenerateMarkers = stops => {
   const { setMap } = useContext(MapContext)
 
   const colorPicker = data => {
@@ -16,6 +16,11 @@ const Stops = ({ stops }) => {
       if (startDate < today && endDate > today) return "#fffc5c"
       if (startDate > today) return "#42b52b"
       return "#c2c2c2"
+    } else if (data?.date) {
+      const date = dayjs(data?.startDate, "MM/DD/YYYY").valueOf(),
+        today = dayjs().valueOf()
+      if (date < today) return "#c20e0e"
+      if (date > today) return "#42b52b"
     } else if (data?.when)
       switch (data?.when) {
         case "past":
@@ -40,5 +45,3 @@ const Stops = ({ stops }) => {
     />
   ))
 }
-
-export default Stops
