@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 import { Marker } from "pigeon-maps"
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect, useRef } from "react"
 import { MapContext } from "../../context/map"
 
 export const useGenerateMarkers = stops => {
@@ -44,4 +44,30 @@ export const useGenerateMarkers = stops => {
       anchor={[stop?.location?.lng, stop?.location?.lat]}
     />
   ))
+}
+
+/**
+ * Simple debouncing using useEffect.
+ *
+ * @param {function} callback the function to call after the debounce delay.
+ * @param {array} deps the dependencies to check for debouncing.
+ * @param {number} [delay=1000] the delay (in ms) after the last change before calling the callback.
+ * @param {boolean} [conditional=true] (optional) conditional to check before running the debounce.
+ * @param {function} conditionalCallback (optional) callback to run if the conditional is false.
+ * @example useDebounce(() => apiCall(input), [input], 1000)
+ */
+export const useDebounce = (callback, deps, delay, conditional = true, conditionalCallback) => {
+  const firstRun = useRef(true)
+  useEffect(() => {
+    const debounce = conditional
+      ? setInterval(() => {
+          !firstRun.current && callback()
+          clearInterval(debounce)
+        }, delay || 1000)
+      : !!conditionalCallback && conditionalCallback()
+    return () => {
+      firstRun.current = false
+      clearInterval(debounce)
+    }
+  }, deps)
 }
