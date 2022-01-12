@@ -3,8 +3,8 @@ import { MapContainer } from "./components/MapContainer"
 import "./App.scss"
 import { useContext, useEffect } from "react"
 import { MapContext } from "./context/map"
-import Header from './components/Header/Header'
-import Load
+import Header from "./components/Header/Header"
+import Loading from "./components/Loading/Loading"
 
 function App() {
   const {
