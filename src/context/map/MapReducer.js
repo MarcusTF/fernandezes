@@ -2,6 +2,7 @@ import { keys } from "./MapContext"
 
 // STATE
 export const initialState = {
+  map: undefined,
   center: [0, 0],
   zoom: 3,
   stops: {
@@ -14,6 +15,9 @@ export const initialState = {
 export const MapReducer = (state, action) => {
   const { payload } = action
   switch (action.type) {
+    case keys.REF_SET: {
+      return { ...state, map: payload }
+    }
     case keys.RESET: {
       return { ...state, center: [0, 0], zoom: 3 }
     }

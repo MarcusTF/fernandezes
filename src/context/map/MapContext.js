@@ -6,6 +6,7 @@ import { useGenerateMarkers } from "../../utils/hooks"
 import { colorPicker } from "../../utils/utils"
 import { GET_ALL_STOPS } from "../graphql/Queries"
 import { default as MapReducer, initialState } from "./MapReducer"
+import geoViewport, { bounds } from "@mapbox/geo-viewport"
 
 // KEYS
 export const keys = {
@@ -14,6 +15,7 @@ export const keys = {
   SET_MAP: "SET_MAP",
   SET_ZOOM: "SET_ZOOM",
   RESET: "RESET",
+  REF_SET: "REF_SET",
 }
 
 export const MapContext = createContext(initialState)
@@ -22,6 +24,10 @@ export const MapProvider = ({ children }) => {
   const [state, dispatch] = useReducer(MapReducer, initialState)
 
   const [getAllStops] = useManualQuery(GET_ALL_STOPS, { variables: { search: "" } })
+
+  const setMapRef = useCallback(ref => {
+    dispatch({ type: keys.REF_SET, payload: ref })
+  }, [])
 
   const setCenter = useCallback(coords => {
     dispatch({ type: keys.SET_CENTER, payload: coords })
@@ -45,7 +51,12 @@ export const MapProvider = ({ children }) => {
       try {
         const res = await getAllStops({ variables: { search: query || "" } })
 
-        const markers = res?.data?.stops?.nodes?.map?.(stop => (
+        if (res.error) return dispatch({ type: keys.SET_STOPS, payload: { ...res, loading: false } })
+
+        const stops = res?.data?.stops?.nodes,
+          map = document.querySelector(".map")
+
+        const markers = stops?.map?.(stop => (
           <Marker
             onClick={e => setMap(e.anchor, 11)}
             key={stop?.id}
@@ -53,8 +64,26 @@ export const MapProvider = ({ children }) => {
             anchor={[stop?.location?.lng, stop?.location?.lat]}
           />
         ))
+        const bounds = stops?.reduce?.(
+          (acc, cur) => {
+            return [
+              Math.min(acc[0], cur.location.lat - 0.5),
+              Math.min(acc[1], cur.location.lng - 0.5),
+              Math.max(acc[2], cur.location.lat + 0.5),
+              Math.max(acc[3], cur.location.lng + 0.5),
+            ]
+          },
+          [
+            stops?.[0]?.location?.lat || 0,
+            stops?.[0]?.location?.lng || 0,
+            stops?.[0]?.location?.lat || 0,
+            stops?.[0]?.location?.lng || 0,
+          ]
+        )
+        const { center, zoom } = geoViewport.viewport(bounds, [map?.clientWidth, map?.clientHeight])
 
         dispatch({ type: keys.SET_STOPS, payload: { ...res, loading: false, markers } })
+        dispatch({ type: keys.SET_MAP, payload: { coords: [center[1], center[0]], zoom } })
       } catch (error) {
         console.log(error)
         dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: false, error } })
@@ -72,6 +101,7 @@ export const MapProvider = ({ children }) => {
         resetMap,
         setMap,
         getStops,
+        setMapRef,
       }}
     >
       {children}

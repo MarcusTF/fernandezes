@@ -1,5 +1,5 @@
 import { Map, ZoomControl } from "pigeon-maps"
-import { useContext } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { MapContext } from "../../context/map"
 
 const MapContainer = () => {
@@ -7,12 +7,17 @@ const MapContainer = () => {
     center,
     zoom,
     stops: { markers },
+    setMapRef,
   } = useContext(MapContext)
 
+  const map = useRef(null)
+
+  useEffect(() => setMapRef(map.current), [setMapRef, map.current])
+
   return (
-    <main className='map'>
-      <Map attribution={false} center={center} zoom={zoom}>
-        <ZoomControl style={{ left: "unset", right: 10, top: "unset", bottom: 10, zIndex: 100 }} />
+    <main ref={map} className='map'>
+      <Map center={center} zoom={zoom}>
+        <ZoomControl style={{ left: "unset", right: 10, top: "unset", bottom: 25, zIndex: 100 }} />
         {markers}
       </Map>
     </main>
