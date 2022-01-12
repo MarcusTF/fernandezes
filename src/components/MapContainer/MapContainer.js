@@ -10,12 +10,12 @@ const MapContainer = () => {
   } = useContext(MapContext)
 
   return (
-    <div className='map'>
+    <main className='map'>
       <Map attribution={false} center={center} zoom={zoom}>
         <ZoomControl style={{ left: "unset", right: 10, top: "unset", bottom: 10, zIndex: 100 }} />
         {markers}
       </Map>
-    </div>
+    </main>
   )
 }
 

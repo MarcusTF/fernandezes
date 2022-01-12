@@ -1,16 +1,56 @@
+@use "../../assets/scss/styles" as *;
+
 header {
-  color: rgb(75, 75, 75);
   position: absolute;
-  backdrop-filter: blur(10px);
-  background-color: #f2fbff34;
   top: 10px;
-  left: 10px;
-  padding: 20px 50px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.37), inset 1px 1px 1px rgba(255, 255, 255, 0.295),
-    inset -1px -1px 1px rgba(68, 68, 68, 0.295);
+  color: rgba(0, 0, 0, 0.616);
   z-index: 1000;
-  font-family: "co-headline", sans-serif;
-  font-size: 20px;
-  margin-bottom: -10px;
-  border-radius: 10px;
+  text-align: left;
+  margin-left: 20px;
+  width: calc(100% - 40px);
+  max-width: 400px;
+  min-width: 200px;
+  .title {
+    padding: 0 30px;
+    position: relative;
+    padding: 20px 0;
+    display: grid;
+    justify-content: center;
+    letter-spacing: 1pt;
+    font-size: 2em;
+    @include glass;
+    h1 {
+      font-size: clamp(30px, 10vw, 40px);
+      font-family: Bebas Neue, sans-serif;
+      margin-bottom: -10px;
+    }
+    h2 {
+      font-size: 20px;
+      font-size: clamp(16px, 5vw, 20px);
+      text-align: left;
+      font-family: Raleway, sans-serif;
+    }
+    button {
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      font-size: 15px;
+      top: 10px;
+      right: 10px;
+      position: absolute;
+      background: transparent;
+      color: rgba(0, 0, 0, 0.616);
+      border: rgba(0, 0, 0, 0.616) 1px solid;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-family: Raleway, sans-serif;
+      &:hover,
+      &:focus-visible {
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.589);
+      }
+    }
+  }
 }

@@ -1,0 +1,8 @@
+@use "../../assets/scss/styles" as *;
+
+.details {
+  margin-top: 5px;
+  > * {
+    @include glass;
+  }
+}
