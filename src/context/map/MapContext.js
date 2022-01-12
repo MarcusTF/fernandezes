@@ -56,9 +56,45 @@ export const MapProvider = ({ children }) => {
         const stops = res?.data?.stops?.nodes,
           map = document.querySelector(".map")
 
+        if (!stops?.length || stops?.length === 0) {
+          dispatch({
+            type: keys.SET_STOPS,
+            payload: {
+              ...res,
+              loading: false,
+              markers: [],
+            },
+          })
+          dispatch({ type: keys.RESET })
+          return
+        }
+
+        if (stops?.length === 1) {
+          const stop = stops[0]
+          dispatch({
+            type: keys.SET_STOPS,
+            payload: {
+              ...res,
+              loading: false,
+              markers: [
+                <Marker
+                  onClick={e => setMap(e.anchor, 11)}
+                  key={stop?.id}
+                  payload={stop?.id}
+                  color={colorPicker(stop?.time)}
+                  anchor={[stop?.location?.lng, stop?.location?.lat]}
+                />,
+              ],
+            },
+          })
+          dispatch({ type: keys.SET_MAP, payload: { coords: [stop?.location?.lng, stop?.location?.lat], zoom: 11 } })
+          return
+        }
+
         const markers = stops?.map?.(stop => (
           <Marker
             onClick={e => setMap(e.anchor, 11)}
+            payload={stop?.id}
             key={stop?.id}
             color={colorPicker(stop?.time)}
             anchor={[stop?.location?.lng, stop?.location?.lat]}
