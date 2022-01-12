@@ -1,0 +1,16 @@
+header {
+  color: rgb(75, 75, 75);
+  position: absolute;
+  backdrop-filter: blur(10px);
+  background-color: #f2fbff34;
+  top: 10px;
+  left: 10px;
+  padding: 20px 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.37), inset 1px 1px 1px rgba(255, 255, 255, 0.295),
+    inset -1px -1px 1px rgba(68, 68, 68, 0.295);
+  z-index: 1000;
+  font-family: "co-headline", sans-serif;
+  font-size: 20px;
+  margin-bottom: -10px;
+  border-radius: 10px;
+}
