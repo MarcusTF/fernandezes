@@ -1,19 +1,22 @@
 export const GET_ALL_STOPS = `
-  query getAllStops($search: String) {
-    stops(where: {search: $search}) {
+  query getStops($search: String = "") {
+    stops(where: { search: $search }) {
       nodes {
         title
-        id
+        location {
+          coords {
+            lat
+            lng
+          }
+        }
         time {
-          when
-          startDate
           endDate
           date
+          startDate
+          when
         }
-        location {
-          lat
-          lng
-          address
+        metadata {
+          home
         }
       }
     }
