@@ -81,13 +81,16 @@ export const MapProvider = ({ children }) => {
                   onClick={e => setMap(e.anchor, 11)}
                   key={stop?.id}
                   payload={stop?.id}
-                  color={colorPicker(stop?.time)}
-                  anchor={[stop?.location?.lng, stop?.location?.lat]}
+                  color={colorPicker(stop)}
+                  anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
                 />,
               ],
             },
           })
-          dispatch({ type: keys.SET_MAP, payload: { coords: [stop?.location?.lng, stop?.location?.lat], zoom: 11 } })
+          dispatch({
+            type: keys.SET_MAP,
+            payload: { coords: [stop?.location?.coords?.lat, stop?.location?.coords?.lng], zoom: 11 },
+          })
           return
         }
 
@@ -96,24 +99,24 @@ export const MapProvider = ({ children }) => {
             onClick={e => setMap(e.anchor, 11)}
             payload={stop?.id}
             key={stop?.id}
-            color={colorPicker(stop?.time)}
-            anchor={[stop?.location?.lng, stop?.location?.lat]}
+            color={colorPicker(stop)}
+            anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
           />
         ))
         const bounds = stops?.reduce?.(
           (acc, cur) => {
             return [
-              Math.min(acc[0], cur.location.lat - 0.5),
-              Math.min(acc[1], cur.location.lng - 0.5),
-              Math.max(acc[2], cur.location.lat + 0.5),
-              Math.max(acc[3], cur.location.lng + 0.5),
+              Math.min(acc[0], cur.location?.coords?.lng),
+              Math.min(acc[1], cur.location?.coords?.lat),
+              Math.max(acc[2], cur.location?.coords?.lng),
+              Math.max(acc[3], cur.location?.coords?.lat),
             ]
           },
           [
-            stops?.[0]?.location?.lat || 0,
-            stops?.[0]?.location?.lng || 0,
-            stops?.[0]?.location?.lat || 0,
-            stops?.[0]?.location?.lng || 0,
+            stops?.[0]?.location?.coords?.lng || 0,
+            stops?.[0]?.location?.coords?.lat || 0,
+            stops?.[0]?.location?.coords?.lng || 0,
+            stops?.[0]?.location?.coords?.lat || 0,
           ]
         )
         const { center, zoom } = geoViewport.viewport(bounds, [map?.clientWidth, map?.clientHeight])

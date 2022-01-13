@@ -41,7 +41,7 @@ export const useGenerateMarkers = stops => {
       onClick={handleClick}
       key={stop?.id}
       color={colorPicker(stop?.time)}
-      anchor={[stop?.location?.lng, stop?.location?.lat]}
+      anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
     />
   ))
 }
