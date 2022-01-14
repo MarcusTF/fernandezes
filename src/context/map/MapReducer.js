@@ -9,6 +9,7 @@ export const initialState = {
     data: undefined,
     loading: false,
     errors: undefined,
+    markers: [],
   },
 }
 
