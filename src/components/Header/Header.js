@@ -11,7 +11,7 @@ const Header = () => {
         <button title='About'>?</button>
       </div>
       <Search />
-      {/* <Details /> */}
+      <Details />
     </header>
   )
 }

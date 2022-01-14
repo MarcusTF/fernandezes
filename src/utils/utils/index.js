@@ -29,3 +29,24 @@ export const colorPicker = stop => {
         return "#c2c2c2"
     }
 }
+
+export const getBounds = coords =>
+  coords?.reduce?.(
+    (acc, cur) => {
+      return [
+        Math.min(acc[0], cur?.lng),
+        Math.min(acc[1], cur?.lat),
+        Math.max(acc[2], cur?.lng),
+        Math.max(acc[3], cur?.lat),
+      ]
+    },
+    [coords?.[0]?.lng || 0, coords?.[0]?.lat || 0, coords?.[0]?.lng || 0, coords?.[0]?.lat || 0]
+  )
+
+export const prettyCoords = stop => {
+  const coords = stop?.location?.coords,
+    ns = coords?.lat >= 0 ? "N" : "S",
+    ew = coords?.lng >= 0 ? "E" : "W",
+    { lat, lng } = coords
+  return `${Math.abs(lat)}°${ns}, ${Math.abs(lng)}°${ew}`
+}

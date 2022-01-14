@@ -1,12 +1,11 @@
-import dayjs from "dayjs"
 import { useManualQuery } from "graphql-hooks"
 import { Marker } from "pigeon-maps"
-import React, { createContext, useCallback, useReducer } from "react"
-import { useGenerateMarkers } from "../../utils/hooks"
-import { colorPicker } from "../../utils/utils"
+import React, { createContext, useCallback, useContext, useReducer } from "react"
+import { colorPicker, getBounds } from "../../utils/utils"
 import { GET_ALL_STOPS } from "../graphql/Queries"
 import { default as MapReducer, initialState } from "./MapReducer"
-import geoViewport, { bounds } from "@mapbox/geo-viewport"
+import geoViewport from "@mapbox/geo-viewport"
+import { DetailsContext } from ".."
 
 // KEYS
 export const keys = {
@@ -15,7 +14,6 @@ export const keys = {
   SET_MAP: "SET_MAP",
   SET_ZOOM: "SET_ZOOM",
   RESET: "RESET",
-  REF_SET: "REF_SET",
 }
 
 export const MapContext = createContext(initialState)
@@ -23,11 +21,9 @@ export const MapContext = createContext(initialState)
 export const MapProvider = ({ children }) => {
   const [state, dispatch] = useReducer(MapReducer, initialState)
 
-  const [getAllStops] = useManualQuery(GET_ALL_STOPS, { variables: { search: "" } })
+  const { getStop } = useContext(DetailsContext)
 
-  const setMapRef = useCallback(ref => {
-    dispatch({ type: keys.REF_SET, payload: ref })
-  }, [])
+  const [getAllStops] = useManualQuery(GET_ALL_STOPS, { variables: { search: "" } })
 
   const setCenter = useCallback(coords => {
     dispatch({ type: keys.SET_CENTER, payload: coords })
@@ -69,6 +65,11 @@ export const MapProvider = ({ children }) => {
           return
         }
 
+        const handleClick = stop => {
+          setMap([stop?.location?.coords?.lat, stop?.location?.coords?.lng], 11)
+          getStop(stop?.id)
+        }
+
         if (stops?.length === 1) {
           const stop = stops[0]
           dispatch({
@@ -78,7 +79,7 @@ export const MapProvider = ({ children }) => {
               loading: false,
               markers: [
                 <Marker
-                  onClick={e => setMap(e.anchor, 11)}
+                  onClick={() => handleClick(stop)}
                   key={stop?.id}
                   payload={stop?.id}
                   color={colorPicker(stop)}
@@ -96,29 +97,32 @@ export const MapProvider = ({ children }) => {
 
         const markers = stops?.map?.(stop => (
           <Marker
-            onClick={e => setMap(e.anchor, 11)}
+            onClick={() => handleClick(stop)}
             payload={stop?.id}
             key={stop?.id}
             color={colorPicker(stop)}
             anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
           />
         ))
-        const bounds = stops?.reduce?.(
-          (acc, cur) => {
-            return [
-              Math.min(acc[0], cur.location?.coords?.lng),
-              Math.min(acc[1], cur.location?.coords?.lat),
-              Math.max(acc[2], cur.location?.coords?.lng),
-              Math.max(acc[3], cur.location?.coords?.lat),
-            ]
-          },
-          [
-            stops?.[0]?.location?.coords?.lng || 0,
-            stops?.[0]?.location?.coords?.lat || 0,
-            stops?.[0]?.location?.coords?.lng || 0,
-            stops?.[0]?.location?.coords?.lat || 0,
-          ]
-        )
+        const bounds = getBounds(stops?.map?.(stop => stop?.location?.coords))
+
+        // stops?.reduce?.(
+        //   (acc, cur) => {
+        //     return [
+        //       Math.min(acc[0], cur.location?.coords?.lng),
+        //       Math.min(acc[1], cur.location?.coords?.lat),
+        //       Math.max(acc[2], cur.location?.coords?.lng),
+        //       Math.max(acc[3], cur.location?.coords?.lat),
+        //     ]
+        //   },
+        //   [
+        //     stops?.[0]?.location?.coords?.lng || 0,
+        //     stops?.[0]?.location?.coords?.lat || 0,
+        //     stops?.[0]?.location?.coords?.lng || 0,
+        //     stops?.[0]?.location?.coords?.lat || 0,
+        //   ]
+        // )
+
         const { center, zoom } = geoViewport.viewport(bounds, [map?.clientWidth, map?.clientHeight])
 
         dispatch({ type: keys.SET_STOPS, payload: { ...res, loading: false, markers } })
@@ -140,7 +144,6 @@ export const MapProvider = ({ children }) => {
         resetMap,
         setMap,
         getStops,
-        setMapRef,
       }}
     >
       {children}

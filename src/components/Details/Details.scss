@@ -1,8 +1,56 @@
 @use "../../assets/scss/styles" as *;
 
 .details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
   margin-top: 5px;
+  * {
+    animation: fadeIn 200ms ease-in;
+  }
   > * {
     @include glass;
+    padding: 10px;
+  }
+  &-loading {
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    .loading-lottie {
+      width: 90%;
+      margin: -30% 0 -40% 0;
+      user-select: none;
+    }
+  }
+  &-title {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    h2 {
+      font-size: 40px;
+      font-family: "Bebas Neue", sans-serif;
+      line-height: 0.9;
+    }
+    p {
+      text-align: right;
+      font-weight: 700;
+    }
+  }
+  &-image {
+    max-width: 100%;
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
