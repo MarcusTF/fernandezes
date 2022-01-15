@@ -1,7 +1,7 @@
 @mixin glass {
   border-radius: 10px;
   backdrop-filter: blur(10px);
-  background-color: #f2fbff34;
+  background-color: #f2fbff8a;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.37), inset 1px 1px 1px rgba(255, 255, 255, 0.295),
     inset -1px -1px 1px rgba(68, 68, 68, 0.295);
 }
