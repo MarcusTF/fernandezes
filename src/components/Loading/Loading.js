@@ -1,13 +1,12 @@
 import Lottie from "react-lottie-player"
-
-import globeLoadJSON from "../../assets/lottie/globe-load.json"
+import { globeLoadLottieData } from "../../assets/lottie"
 
 import "./Loading.scss"
 
 const Loading = () => {
   return (
     <div className='loading-container'>
-      <Lottie animationData={globeLoadJSON} play className='loading' />
+      <Lottie animationData={globeLoadLottieData} play className='loading' />
     </div>
   )
 }

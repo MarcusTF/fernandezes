@@ -92,6 +92,7 @@ export const MapProvider = ({ children }) => {
             type: keys.SET_MAP,
             payload: { coords: [stop?.location?.coords?.lat, stop?.location?.coords?.lng], zoom: 11 },
           })
+          getStop(stop?.id)
           return
         }
 
@@ -106,25 +107,12 @@ export const MapProvider = ({ children }) => {
         ))
         const bounds = getBounds(stops?.map?.(stop => stop?.location?.coords))
 
-        // stops?.reduce?.(
-        //   (acc, cur) => {
-        //     return [
-        //       Math.min(acc[0], cur.location?.coords?.lng),
-        //       Math.min(acc[1], cur.location?.coords?.lat),
-        //       Math.max(acc[2], cur.location?.coords?.lng),
-        //       Math.max(acc[3], cur.location?.coords?.lat),
-        //     ]
-        //   },
-        //   [
-        //     stops?.[0]?.location?.coords?.lng || 0,
-        //     stops?.[0]?.location?.coords?.lat || 0,
-        //     stops?.[0]?.location?.coords?.lng || 0,
-        //     stops?.[0]?.location?.coords?.lat || 0,
-        //   ]
-        // )
+        const { center, zoom } = geoViewport.viewport(bounds, [
+          map?.clientWidth,
+          map?.clientWidth < 900 ? map?.clientHeight / 2 : map?.clientHeight,
+        ])
 
-        const { center, zoom } = geoViewport.viewport(bounds, [map?.clientWidth, map?.clientHeight])
-
+        getStop(null)
         dispatch({ type: keys.SET_STOPS, payload: { ...res, loading: false, markers } })
         dispatch({ type: keys.SET_MAP, payload: { coords: [center[1], center[0]], zoom } })
       } catch (error) {
@@ -132,7 +120,7 @@ export const MapProvider = ({ children }) => {
         dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: false, error } })
       }
     },
-    [getAllStops, setMap]
+    [getAllStops, getStop, setMap]
   )
 
   return (
