@@ -11,7 +11,7 @@ const Images = ({ data: { stop } }) => {
   return stop?.images?.thumbnail?.mediaItemUrl ? (
     <div className={`details-images ${fullscreen ? "fullscreen" : "regular"}`}>
       <XIcon onClick={() => setFullscreen(s => !s)} role='button' aria-label='clear search' className='close' />
-      <Glider draggable rewind className='slider' hasArrows>
+      <Glider rewind className='slider' hasArrows>
         <div className='image-slide'>
           <img
             onClick={() => setFullscreen(s => !s)}
