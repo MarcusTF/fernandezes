@@ -40,7 +40,12 @@ const Details = () => {
                 <img src={stop?.images?.thumbnail?.mediaItemUrl} alt='featured' />
               </div>
             ) : null}
-            {stop?.text?.description ? <div className='details-description'>{stop?.text?.description}</div> : null}
+            {stop?.text?.description ? (
+              <div className='details-description'>
+                {stop?.text?.title ? <h3 className='title'>{stop?.text?.title}</h3> : null}
+                <p className='description'>{stop?.text?.description}</p>
+              </div>
+            ) : null}
           </>
         )
       )}
