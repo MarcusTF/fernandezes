@@ -37,16 +37,16 @@ header {
       cursor: pointer;
       display: grid;
       place-items: center;
-      font-weight: bold;
+      font-weight: 900;
       font-size: 13px;
       top: 10px;
       right: 10px;
       position: absolute;
       background: transparent;
       color: rgba(0, 0, 0, 0.616);
-      border: rgba(0, 0, 0, 0.616) 1px solid;
-      width: 18px;
-      height: 18px;
+      border: rgba(0, 0, 0, 0.616) 3px solid;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       font-family: Raleway, sans-serif;
       &:hover,
