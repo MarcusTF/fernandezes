@@ -2,14 +2,18 @@
 
 header {
   position: absolute;
-  top: 10px;
+  top: 0;
   color: rgba(0, 0, 0, 0.616);
   z-index: 1000;
   text-align: left;
-  margin-left: 20px;
-  width: calc(100% - 40px);
+  width: calc(100% - 20px);
   max-width: 400px;
   min-width: 200px;
+  height: min-content;
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  margin: 10px;
   .title {
     position: relative;
     padding: 20px 0;
