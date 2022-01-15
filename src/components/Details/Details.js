@@ -1,11 +1,12 @@
 import { useContext } from "react"
 import Lottie from "react-lottie-player"
-import { loadingLottieData } from "../../assets/lottie"
-import { XIcon } from "../../assets/vector"
 
 import { DetailsContext } from "../../context"
 import { prettyCoords } from "../../utils/utils"
+import { Images } from "./DetailComponents"
 
+import { loadingLottieData } from "../../assets/lottie"
+import { XIcon } from "../../assets/vector"
 import "./Details.scss"
 
 const Details = () => {
@@ -41,11 +42,8 @@ const Details = () => {
               <p className='address'>{stop?.location?.address || stop?.title}</p>
             </div>
           </div>
-          {stop?.images?.thumbnail?.mediaItemUrl ? (
-            <div className='details-image'>
-              <img src={stop?.images?.thumbnail?.mediaItemUrl} alt='featured' />
-            </div>
-          ) : null}
+          <Images data={{ stop, loading, error }} />
+
           {stop?.text?.description ? (
             <div className='details-description'>
               {stop?.text?.title ? <h3 className='title'>{stop?.text?.title}</h3> : null}

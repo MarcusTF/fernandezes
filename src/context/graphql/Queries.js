@@ -51,9 +51,13 @@ export const GET_STOP = `
       images {
         thumbnail {
           mediaItemUrl
+          altText
+          id
         }
         photos {
           mediaItemUrl
+          altText
+          id
         }
       }
       time {
