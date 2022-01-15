@@ -1,6 +1,7 @@
 @use "../../assets/scss/styles" as *;
 
 .input-wrapper {
+  z-index: 10;
   display: grid;
   grid-template-columns: auto 1fr auto;
   @include glass;

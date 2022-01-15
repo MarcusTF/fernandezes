@@ -11,7 +11,7 @@ const MapContainer = () => {
 
   return (
     <main className='map'>
-      <Map center={center} zoom={zoom}>
+      <Map attribution={false} center={center} zoom={zoom}>
         <ZoomControl style={{ left: "unset", right: 10, top: "unset", bottom: 25, zIndex: 100 }} />
         {markers}
       </Map>
