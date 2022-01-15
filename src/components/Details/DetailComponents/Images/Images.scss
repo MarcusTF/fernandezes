@@ -1,0 +1,68 @@
+div.details-images {
+  overflow: hidden;
+  width: 100%;
+  height: max-content;
+  padding: 10px 30px;
+  transition: 200ms;
+  &.regular {
+    svg.close {
+      display: none;
+    }
+  }
+  &.fullscreen {
+    svg.close {
+      height: 50px;
+      width: 50px;
+      bottom: 50px;
+      right: calc(50% - 25px);
+      position: absolute;
+      z-index: 101;
+      cursor: pointer;
+      background-color: rgb(228, 115, 115);
+      border-radius: 50%;
+      * {
+        fill: rgb(128, 0, 0);
+      }
+      &:hover {
+        background-color: rgb(241, 76, 76);
+        * {
+          fill: rgb(184, 0, 0);
+        }
+      }
+    }
+    background-color: rgba(0, 0, 0, 0.836);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 100;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    .image-slide {
+      height: 100%;
+      img {
+        cursor: pointer;
+        max-height: 95vh;
+        height: 100%;
+      }
+    }
+  }
+  .slider {
+    height: min-content;
+  }
+  .image-slide {
+    padding: 2px;
+    display: grid;
+    place-items: center;
+    img {
+      cursor: pointer;
+      max-height: 300px;
+      transition: transform 200ms;
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+}
