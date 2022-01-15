@@ -6,6 +6,8 @@ import { default as DetailsReducer, initialState } from "./DetailsReducer"
 // KEYS
 export const keys = {
   OPEN_STOP: "OPEN_STOP",
+  OPEN_PANEL: "OPEN_PANEL",
+  CLOSE_PANEL: "CLOSE_PANEL",
 }
 
 export const DetailsContext = createContext(initialState)
@@ -15,9 +17,14 @@ export const DetailsProvider = ({ children }) => {
 
   const [getStopById] = useManualQuery(GET_STOP)
 
+  const closePanel = useCallback(() => {
+    dispatch({ type: keys.CLOSE_PANEL })
+  }, [])
+
   const getStop = useCallback(
     async id => {
-      if (!id) dispatch({ type: keys.OPEN_STOP, payload: { data: undefined, loading: false, error: undefined } })
+      closePanel()
+      if (!id) return dispatch({ type: keys.OPEN_STOP, payload: { data: undefined, loading: false, error: undefined } })
       dispatch({ type: keys.OPEN_STOP, payload: { data: undefined, loading: true, error: undefined } })
       try {
         const res = await getStopById({ variables: { id } })
@@ -27,7 +34,15 @@ export const DetailsProvider = ({ children }) => {
         dispatch({ type: keys.OPEN_STOP, payload: { data: undefined, loading: false, error } })
       }
     },
-    [getStopById]
+    [closePanel, getStopById]
+  )
+
+  const openPanel = useCallback(
+    component => {
+      getStop(null)
+      dispatch({ type: keys.OPEN_PANEL, payload: component })
+    },
+    [getStop]
   )
 
   return (
@@ -35,6 +50,8 @@ export const DetailsProvider = ({ children }) => {
       value={{
         ...state,
         getStop,
+        openPanel,
+        closePanel,
       }}
     >
       {children}
