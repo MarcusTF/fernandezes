@@ -1,10 +1,15 @@
 @use "../../assets/scss/styles" as *;
 
 .details {
+  padding: 5px 4px 10px 5px;
+  margin: 0 -9px 0 -5px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 5px;
-  margin-top: 5px;
+  overflow-y: auto;
+  height: 100%;
+  border-radius: 10px;
+  scrollbar-gutter: stable;
   * {
     animation: fadeIn 200ms ease-in;
   }

@@ -1,4 +1,6 @@
 .App {
+  overflow: hidden;
   display: grid;
   grid-template-rows: 1fr;
+  position: relative;
 }
