@@ -26,7 +26,7 @@ export const GET_ALL_STOPS = `
 
 export const GET_STOP = `
   query GetStop($id: ID = "") {
-    stop( id: $id) {
+    stop(id: $id) {
       location {
         coords {
           lat
@@ -44,7 +44,15 @@ export const GET_STOP = `
           name
           website
           pictures {
+            mediaDetails {
+              sizes {
+                width
+                name
+                sourceUrl
+              }
+            }
             mediaItemUrl
+            altText
           }
         }
       }
@@ -52,12 +60,24 @@ export const GET_STOP = `
         thumbnail {
           mediaItemUrl
           altText
-          id
+          mediaDetails {
+            sizes {
+              width
+              name
+              sourceUrl
+            }
+          }
         }
         photos {
           mediaItemUrl
           altText
-          id
+          mediaDetails {
+            sizes {
+              width
+              name
+              sourceUrl
+            }
+          }
         }
       }
       time {
@@ -66,6 +86,7 @@ export const GET_STOP = `
         startDate
       }
       text {
+        title
         description
       }
       metadata {

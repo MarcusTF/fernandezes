@@ -3,7 +3,7 @@ import Lottie from "react-lottie-player"
 
 import { DetailsContext } from "../../context"
 import { prettyCoords } from "../../utils/utils"
-import { Images } from "./DetailComponents"
+import { Description, Images } from "./DetailComponents"
 
 import { loadingLottieData } from "../../assets/lottie"
 import { XIcon } from "../../assets/vector"
@@ -43,13 +43,7 @@ const Details = () => {
             </div>
           </div>
           <Images data={{ stop, loading, error }} />
-
-          {stop?.text?.description ? (
-            <div className='details-description'>
-              {stop?.text?.title ? <h3 className='title'>{stop?.text?.title}</h3> : null}
-              <p className='description'>{stop?.text?.description}</p>
-            </div>
-          ) : null}
+          <Description data={{ stop, loading, error }} />
         </>
       )}
     </div>

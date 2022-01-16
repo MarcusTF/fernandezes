@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 import { Marker } from "pigeon-maps"
-import { useCallback, useContext, useEffect, useRef } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { MapContext } from "../../context/map"
 
 export const useGenerateMarkers = stops => {
@@ -70,4 +70,16 @@ export const useDebounce = (callback, deps, delay, conditional = true, condition
       clearInterval(debounce)
     }
   }, deps)
+}
+
+export const useProgressiveImage = src => {
+  const [srcLoaded, setSrcLoaded] = useState(null)
+
+  useEffect(() => {
+    const img = new Image()
+    img.src = src
+    img.onload = () => setSrcLoaded(src)
+  }, [src])
+
+  return srcLoaded
 }
