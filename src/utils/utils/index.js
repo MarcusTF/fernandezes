@@ -50,3 +50,5 @@ export const prettyCoords = stop => {
     { lat, lng } = coords
   return `${Math.abs(lat)}°${ns}, ${Math.abs(lng)}°${ew}`
 }
+
+export const getImageSize = (sizes, sizeName) => sizes?.filter?.(size => size.name === sizeName)?.[0]?.sourceUrl
