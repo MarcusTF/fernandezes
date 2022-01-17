@@ -1,0 +1,20 @@
+@use "../../assets/scss/styles" as *;
+
+.actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+  button {
+    @include glass;
+    font-family: "Raleway", sans-serif;
+    font-size: 15px;
+    color: #0000009d;
+    font-weight: 600;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

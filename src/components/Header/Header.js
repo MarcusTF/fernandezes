@@ -1,8 +1,9 @@
 import { useContext } from "react"
+import { Outlet } from "react-router-dom"
 import { DetailsContext } from "../../context"
-import { Details } from "../Details"
 import { About } from "../Panels"
 import Search from "../Search/Search"
+import UserActions from "../UserActions/UserActions"
 import "./Header.scss"
 
 const Header = () => {
@@ -17,7 +18,8 @@ const Header = () => {
         </button>
       </div>
       <Search />
-      <Details />
+      <Outlet />
+      <UserActions />
     </header>
   )
 }

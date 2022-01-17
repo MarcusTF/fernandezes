@@ -42,7 +42,7 @@ export const MapProvider = ({ children }) => {
   }, [])
 
   const getStops = useCallback(
-    async query => {
+    async (query, fetchSingle = true) => {
       dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: true, error: undefined } })
       try {
         const res = await getAllStops({ variables: { search: query || "" } })
@@ -92,7 +92,7 @@ export const MapProvider = ({ children }) => {
             type: keys.SET_MAP,
             payload: { coords: [stop?.location?.coords?.lat, stop?.location?.coords?.lng], zoom: 11 },
           })
-          getStop(stop?.id)
+          if (fetchSingle) getStop(stop?.id)
           return
         }
 
