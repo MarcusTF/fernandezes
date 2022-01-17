@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import Lottie from "react-lottie-player"
+import { useNavigate, useParams } from "react-router-dom"
 import { loadingLottieData } from "../../assets/lottie"
 import { SearchIcon, XIcon } from "../../assets/vector"
 import { DetailsContext } from "../../context"
@@ -9,7 +10,7 @@ import { useDebounce } from "../../utils/hooks"
 import "./Search.scss"
 
 const Search = () => {
-  const { getStops } = useContext(MapContext)
+  const { getStops, setMap } = useContext(MapContext)
   const {
     getStop,
     stop: { data: stop, loading, error },
@@ -17,6 +18,9 @@ const Search = () => {
 
   const [search, setSearch] = useState("")
   const lastSearch = useRef("")
+
+  const { stopId } = useParams()
+  const navigate = useNavigate()
 
   useDebounce(
     () => {
@@ -31,11 +35,29 @@ const Search = () => {
   )
 
   useEffect(() => {
-    if (stop?.title) {
-      setSearch(stop.title)
-      lastSearch.current = stop?.title
+    if (stopId && !search && !stop) {
+      getStop(stopId)
+      return
     }
-  }, [stop?.title])
+    if (stopId && stop?.id === stopId && !search) {
+      getStops(stop?.title, false)
+      lastSearch.current = stop?.title
+      setSearch(stop.title)
+      return
+    }
+    if (stop?.title && stop?.id !== stopId) {
+      getStops(stop?.title, false)
+      lastSearch.current = stop?.title
+      setSearch(stop.title)
+      navigate(`/stop/${stop?.id}`)
+    }
+  }, [getStop, getStops, navigate, search, setMap, stop, stopId])
+
+  // useEffect(() => {
+  //   if (stopId) {
+  //     getStop(stopId)
+  //   }
+  // }, [getStop, stopId])
 
   return (
     <div className='input-wrapper'>
@@ -58,6 +80,7 @@ const Search = () => {
             setSearch("")
             lastSearch.current = ""
             getStop(null)
+            navigate("/")
             getStops("")
           }}
         />

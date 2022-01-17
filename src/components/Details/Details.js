@@ -16,7 +16,7 @@ const Details = () => {
     closePanel,
   } = useContext(DetailsContext)
 
-  return stop || panel || loading ? (
+  return (
     <div className='details'>
       {loading ? (
         <div className='details-loading'>
@@ -33,7 +33,7 @@ const Details = () => {
           <XIcon role='button' aria-label='clear search' className='close' onClick={() => closePanel()} />
           {panel}
         </div>
-      ) : (
+      ) : stop ? (
         <>
           <div className='details-title'>
             <h2>{stop?.title?.split(",")[0]}</h2>
@@ -45,9 +45,9 @@ const Details = () => {
           <Images data={{ stop, loading, error }} />
           <Description data={{ stop, loading, error }} />
         </>
-      )}
+      ) : null}
     </div>
-  ) : null
+  )
 }
 
 export default Details
