@@ -10,9 +10,7 @@ import { getImageSize } from "../../../../utils/utils"
 const Images = ({ data: { stop } }) => {
   const [fullscreen, setFullscreen] = useState(false)
 
-  console.log(stop?.images?.photos)
-
-  return stop?.images?.thumbnail?.mediaItemUrl ? (
+  return stop?.images?.photos ? (
     <div className={`details-images ${fullscreen ? "fullscreen" : "regular"}`}>
       <XIcon onClick={() => setFullscreen(s => !s)} role='button' aria-label='clear search' className='close' />
       <Glider onSlideVisible={e => console.log(e)} rewind className='slider' hasArrows>
@@ -24,7 +22,7 @@ const Images = ({ data: { stop } }) => {
             alt={stop?.images?.thumbnail?.altText}
           />
         </div>
-        {stop?.images?.photos?.map?.(({ mediaDetails, mediaItemUrl, altText, id }, i) => {
+        {stop?.images?.photos?.map?.(({ mediaDetails, mediaItemUrl, altText, id }) => {
           return (
             <div className='image-slide' key={id}>
               <LazyImage
@@ -34,11 +32,19 @@ const Images = ({ data: { stop } }) => {
                 onClick={() => setFullscreen(s => !s)}
                 alt={altText}
               />
-              {/* <img onClick={() => setFullscreen(s => !s)} src={mediaItemUrl} alt={altText} /> */}
             </div>
           )
         })}
       </Glider>
+    </div>
+  ) : stop?.images?.thumbnail?.mediaItemUrl ? (
+    <div className={`details-images ${fullscreen ? "fullscreen" : "regular"}`}>
+      <LazyImage
+        onClick={() => setFullscreen(s => !s)}
+        placeholder={getImageSize(stop?.images?.thumbnail?.mediaDetails?.sizes, "medium")}
+        src={stop?.images?.thumbnail?.mediaItemUrl}
+        alt={stop?.images?.thumbnail?.altText}
+      />
     </div>
   ) : null
 }

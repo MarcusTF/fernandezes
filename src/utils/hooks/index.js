@@ -1,5 +1,6 @@
 import dayjs from "dayjs"
 import { Marker } from "pigeon-maps"
+import react from "react"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { MapContext } from "../../context/map"
 
@@ -82,4 +83,14 @@ export const useProgressiveImage = src => {
   }, [src])
 
   return srcLoaded
+}
+
+export const useOnce = (callback, condition) => {
+  const called = useRef(false)
+  useEffect(() => {
+    if (condition && !called.current) {
+      called.current = true
+      callback()
+    }
+  }, [callback, condition])
 }

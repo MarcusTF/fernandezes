@@ -2,7 +2,7 @@ import { keys } from "./DetailsContext"
 
 // STATE
 export const initialState = {
-  stop: {
+  stopDetails: {
     data: undefined,
     loading: false,
     errors: undefined,
@@ -14,13 +14,7 @@ export const DetailsReducer = (state, action) => {
   const { payload } = action
   switch (action.type) {
     case keys.OPEN_STOP: {
-      return { ...state, stop: payload }
-    }
-    case keys.OPEN_PANEL: {
-      return { ...state, panel: payload }
-    }
-    case keys.CLOSE_PANEL: {
-      return { ...state, panel: null }
+      return { ...state, stopDetails: payload }
     }
     default:
       return state
