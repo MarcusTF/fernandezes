@@ -1,5 +1,5 @@
 export const GET_ALL_STOPS = `
-  query getStops($search: String = "") {
+  query searchStops($search: String = "") {
     stops(first: 1000, where: { search: $search }) {
       nodes {
         id
@@ -23,9 +23,32 @@ export const GET_ALL_STOPS = `
     }
   }
 `
-
 export const GET_STOP = `
   query GetStop($id: ID = "") {
+    stop(id: $id) {
+      id
+      title
+      location {
+        coords {
+          lat
+          lng
+        }
+      }
+      time {
+        endDate
+        date
+        startDate
+        when
+      }
+      metadata {
+        home
+      }
+    }
+  }
+`
+
+export const GET_STOP_DETAILS = `
+  query GetStopDetails($id: ID = "") {
     stop(id: $id) {
       location {
         coords {

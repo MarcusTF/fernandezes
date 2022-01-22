@@ -4,19 +4,11 @@ import "./index.scss"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import GlobalContextProvider from "./context/GlobalContext"
-import { Route, Routes } from "react-router-dom"
-import { Details } from "./components/Details"
 
 ReactDOM.render(
   <React.StrictMode>
     <GlobalContextProvider>
-      <Routes>
-        <Route path='' element={<App />}>
-          <Route path='/stop/:stopId' element={<Details />} />
-          <Route path='/' element={<Details />} />
-          <Route path='*' element={<Details />} />
-        </Route>
-      </Routes>
+      <App />
     </GlobalContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
