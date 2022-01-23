@@ -22,11 +22,9 @@ function App() {
   const {
     stops: { loading },
   } = useContext(MapContext)
-  const { user, pullUserFromStorage } = useContext(AuthContext)
+  const { pullUserFromStorage } = useContext(AuthContext)
 
   useEffect(() => pullUserFromStorage(), [pullUserFromStorage])
-
-  console.log(user)
 
   return (
     <div className='App'>
