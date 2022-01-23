@@ -15,6 +15,7 @@ header {
   grid-template-rows: auto auto 1fr;
   margin: 10px;
   .title {
+    user-select: none;
     position: relative;
     padding: 20px 0;
     display: grid;
@@ -23,6 +24,7 @@ header {
     font-size: 2em;
     @include glass;
     h1 {
+      cursor: pointer;
       font-size: clamp(30px, 10vw, 40px);
       font-family: Bebas Neue, sans-serif;
       margin-bottom: -10px;
