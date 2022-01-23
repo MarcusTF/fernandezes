@@ -24,3 +24,12 @@ body,
   scrollbar-color: rgba(0, 0, 0, 0.349);
   scrollbar-width: thin;
 }
+
+a {
+  font-weight: 600;
+  color: rgb(170, 86, 7);
+  &:hover {
+    text-decoration: none;
+    color: rgb(214, 106, 4);
+  }
+}

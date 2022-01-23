@@ -1,3 +1,6 @@
+import React, { useEffect } from "react"
+import ReactDOM from "react-dom"
+
 import { MapContainer } from "./components/MapContainer"
 
 import "./App.scss"
@@ -7,12 +10,23 @@ import Header from "./components/Header/Header"
 import Loading from "./components/Loading/Loading"
 import { Route, Routes } from "react-router-dom"
 import { DetailsContent } from "./components/Details"
-import { About } from "./components/Panels"
+import { About, Login, SignUp } from "./components/Panels"
+import { AuthContext } from "./context"
+
+if (process.env.NODE_ENV !== "production") {
+  const axe = require("@axe-core/react")
+  axe(React, ReactDOM, 1000)
+}
 
 function App() {
   const {
     stops: { loading },
   } = useContext(MapContext)
+  const { user, pullUserFromStorage } = useContext(AuthContext)
+
+  useEffect(() => pullUserFromStorage(), [pullUserFromStorage])
+
+  console.log(user)
 
   return (
     <div className='App'>
@@ -21,7 +35,8 @@ function App() {
         <Route path='' element={<Header />}>
           <Route path='stop/:stopId' element={<DetailsContent />} />
           <Route path='about' element={<About />} />
-          <Route path='login' element={<div>LOGIN</div>} />
+          <Route path='login' element={<Login />} />
+          <Route path='signup' element={<SignUp />} />
         </Route>
         <Route path='*' element={<Header />} />
       </Routes>

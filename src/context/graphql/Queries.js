@@ -81,6 +81,7 @@ export const GET_STOP_DETAILS = `
       }
       images {
         thumbnail {
+          id
           mediaItemUrl
           altText
           mediaDetails {
@@ -92,6 +93,7 @@ export const GET_STOP_DETAILS = `
           }
         }
         photos {
+          id
           mediaItemUrl
           altText
           mediaDetails {

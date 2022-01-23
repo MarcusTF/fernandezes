@@ -50,8 +50,8 @@ const DetailsContent = () => {
               <p className='address'>{data?.location?.address || data?.title}</p>
             </div>
           </div>
-          <Images data={{ data, loading: stopDataLoading, error }} />
-          <Description data={{ data, loading: stopDataLoading, error }} />
+          <Images data={{ stop: data, loading: stopDataLoading, error }} />
+          <Description data={{ stop: data, loading: stopDataLoading, error }} />
         </>
       ) : null}
     </>

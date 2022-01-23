@@ -80,6 +80,7 @@ export const useProgressiveImage = src => {
     const img = new Image()
     img.src = src
     img.onload = () => setSrcLoaded(src)
+    return () => img.remove()
   }, [src])
 
   return srcLoaded
