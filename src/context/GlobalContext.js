@@ -1,14 +1,16 @@
 import { BrowserRouter } from "react-router-dom"
-import { GraphQLProvider, MapProvider, DetailsProvider } from "./"
+import { GraphQLProvider, MapProvider, DetailsProvider, AuthProvider } from "./"
 
 const GlobalContextProvider = ({ children }) => {
   return (
     <GraphQLProvider>
-      <BrowserRouter>
-        <DetailsProvider>
-          <MapProvider>{children}</MapProvider>
-        </DetailsProvider>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <DetailsProvider>
+            <MapProvider>{children}</MapProvider>
+          </DetailsProvider>
+        </BrowserRouter>
+      </AuthProvider>
     </GraphQLProvider>
   )
 }

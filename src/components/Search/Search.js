@@ -60,10 +60,10 @@ const Search = () => {
         id='search'
       />
       {search && (
-        <XIcon
-          role='button'
-          aria-label='clear search'
+        <button
+          tabIndex={0}
           className='clear'
+          title='Clear search'
           onClick={() => {
             if (!stopsLoading) {
               setSearch("")
@@ -73,7 +73,9 @@ const Search = () => {
               searchStops("")
             }
           }}
-        />
+        >
+          <XIcon className='clear' />
+        </button>
       )}
     </div>
   )

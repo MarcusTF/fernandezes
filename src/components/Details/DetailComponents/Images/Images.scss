@@ -4,6 +4,15 @@ div.details-images {
   height: max-content;
   padding: 10px 30px;
   transition: 200ms;
+  .glider-next,
+  .glider-prev {
+    &:focus-visible {
+      color: black;
+      font-weight: bolder;
+      text-decoration: solid;
+      filter: drop-shadow(3px 3px 0px #00000055);
+    }
+  }
   &.regular {
     svg.close {
       display: none;

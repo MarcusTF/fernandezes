@@ -10,17 +10,30 @@
   align-items: center;
   justify-content: center;
   margin-bottom: -10px;
+  button.clear {
+    background-color: transparent;
+    border: none;
+    width: 20px;
+    height: 20px;
+    padding: none;
+    margin: 0 10px;
+    display: grid;
+    &:focus-visible {
+      outline: solid black 2px;
+      outline-offset: 2px;
+      border-radius: 50%;
+    }
+  }
   svg {
     height: 25px;
     width: 25px;
     margin: 0 10px;
     &.clear {
+      margin: 0;
       height: 20px;
       width: 20px;
       cursor: pointer;
-      .loading {
-        animation: spin loop 1s;
-      }
+      outline: none;
     }
     * {
       fill: rgba(0, 0, 0, 0.616);
