@@ -93,8 +93,8 @@ const Login = () => {
                     <label htmlFor='remember'>Stay Logged In</label>
                   </div>
                 </div>
+                {error && <p className='fetch-error'>Wrong Username or Password</p>}
                 <button>Log In</button>
-
                 <p>
                   Don't have an account? <Link to='/signup'>Sign Up</Link>
                 </p>

@@ -5,6 +5,12 @@
   grid-template-columns: 1fr;
   gap: 20px;
   padding: 20px;
+  .fetch-error {
+    @include glass;
+    font-weight: 700;
+    background-color: #d66a0442;
+    color: #d66a04;
+  }
   p {
     padding: 10px;
     text-align: center;

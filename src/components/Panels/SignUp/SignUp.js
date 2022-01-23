@@ -39,7 +39,7 @@ const SignUp = () => {
                 <div className='field-wrapper'>
                   {email?.value && <label htmlFor='email'>Email</label>}
                   <Field
-                    validate={v => (!v ? "Required." : null)}
+                    validate={v => (!v ? "Required." : validateEmail(v))}
                     autoComplete='email'
                     placeholder='Email'
                     id='email'

@@ -13,7 +13,7 @@ const Images = ({ data: { stop } }) => {
   return stop?.images?.photos ? (
     <div className={`details-images ${fullscreen ? "fullscreen" : "regular"}`}>
       <XIcon onClick={() => setFullscreen(s => !s)} role='button' aria-label='clear search' className='close' />
-      <Glider onSlideVisible={e => console.log(e)} rewind className='slider' hasArrows tabindex='0'>
+      <Glider rewind className='slider' hasArrows tabindex='0'>
         <div className='image-slide'>
           <LazyImage
             onClick={() => setFullscreen(s => !s)}

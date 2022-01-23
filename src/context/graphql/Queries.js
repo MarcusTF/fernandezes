@@ -117,9 +117,7 @@ export const GET_STOP_DETAILS = `
       metadata {
         home
         travelers {
-          ... on Traveler {
-            id
-          }
+          id
         }
       }
       title

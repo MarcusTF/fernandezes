@@ -31,10 +31,10 @@ function App() {
       {loading && <Loading />}
       <Routes>
         <Route path='' element={<Header />}>
-          <Route path='stop/:stopId' element={<DetailsContent />} />
-          <Route path='about' element={<About />} />
-          <Route path='login' element={<Login />} />
-          <Route path='signup' element={<SignUp />} />
+          <Route path='/stop/:stopId' element={<DetailsContent />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp />} />
         </Route>
         <Route path='*' element={<Header />} />
       </Routes>

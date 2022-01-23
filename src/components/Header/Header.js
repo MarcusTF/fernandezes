@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <header>
       <div className='title'>
-        <h1>The Fernandezes</h1>
+        <h1 onClick={() => navigate("/")}>The Fernandezes</h1>
         <h2>World Tour</h2>
         <button tabIndex={0} onClick={() => navigate("about")} title='About'>
           ?
