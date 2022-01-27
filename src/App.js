@@ -10,7 +10,8 @@ import Header from "./components/Header/Header"
 import Loading from "./components/Loading/Loading"
 import { Route, Routes } from "react-router-dom"
 import { DetailsContent } from "./components/Details"
-import { About, Login, SignUp } from "./components/Panels"
+import { About, Login, Profile, SignUp } from "./components/Panels"
+import PrivateRoute from "./utils/router/PrivateRoute"
 import { AuthContext } from "./context"
 
 if (process.env.NODE_ENV !== "production") {
@@ -20,11 +21,9 @@ if (process.env.NODE_ENV !== "production") {
 
 function App() {
   const {
-    stops: { loading },
-  } = useContext(MapContext)
-  const { pullUserFromStorage } = useContext(AuthContext)
-
-  useEffect(() => pullUserFromStorage(), [pullUserFromStorage])
+      stops: { loading },
+    } = useContext(MapContext),
+    { user } = useContext(AuthContext)
 
   return (
     <div className='App'>
@@ -34,7 +33,22 @@ function App() {
           <Route path='/stop/:stopId' element={<DetailsContent />} />
           <Route path='/about' element={<About />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<SignUp />} />
+          <Route
+            path='/signup'
+            element={
+              <PrivateRoute invert>
+                <SignUp />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
         </Route>
         <Route path='*' element={<Header />} />
       </Routes>

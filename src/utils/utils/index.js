@@ -46,9 +46,8 @@ export const getBounds = coords =>
 export const prettyCoords = stop => {
   const coords = stop?.location?.coords,
     ns = coords?.lat >= 0 ? "N" : "S",
-    ew = coords?.lng >= 0 ? "E" : "W",
-    { lat, lng } = coords
-  return `${Math.abs(lat)}°${ns}, ${Math.abs(lng)}°${ew}`
+    ew = coords?.lng >= 0 ? "E" : "W"
+  return `${Math.abs(coords?.lat)}°${ns}, ${Math.abs(coords?.lng)}°${ew}`
 }
 
 export const getImageSize = (sizes, sizeName) => sizes?.filter?.(size => size.name === sizeName)?.[0]?.sourceUrl

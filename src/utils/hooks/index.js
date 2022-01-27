@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { Marker } from "pigeon-maps"
-import react from "react"
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState, useLayoutEffect } from "react"
+import { AuthContext } from "../../context"
 import { MapContext } from "../../context/map"
 
 export const useGenerateMarkers = stops => {
@@ -95,3 +95,29 @@ export const useOnce = (callback, condition) => {
     }
   }, [callback, condition])
 }
+
+export const useStoredUser = () => {
+  const { user: fromContext } = useContext(AuthContext)
+
+  const storage = sessionStorage?.getItem?.("_the_fernandezes_session"),
+    remembered = localStorage?.getItem?.("_the_fernandezes_remember_me"),
+    fromStorage = storage ? JSON?.parse?.(storage) : remembered ? JSON?.parse?.(remembered) : null
+
+  return fromContext || fromStorage
+}
+
+export const useInterval = (callback, delay) => {
+  const savedCallback = useRef(callback)
+  useLayoutEffect(() => {
+    savedCallback.current = callback
+  }, [callback])
+  useEffect(() => {
+    if (!delay && delay !== 0) {
+      return
+    }
+    const id = setInterval(() => savedCallback.current(), delay)
+    return () => clearInterval(id)
+  }, [delay])
+}
+
+export default useInterval

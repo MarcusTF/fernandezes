@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useRef } from "react/cjs/react.development"
-import { DetailsContext, MapContext } from "../../context"
+import { AuthContext, DetailsContext, MapContext } from "../../context"
 import { useOnce } from "../../utils/hooks"
 import { Details } from "../Details"
 import Search from "../Search/Search"
@@ -16,7 +16,9 @@ const Header = () => {
     searchStops,
     stops: { data, loading },
   } = useContext(MapContext)
+  const { pullUserFromStorage } = useContext(AuthContext)
 
+  useEffect(() => pullUserFromStorage(), [pullUserFromStorage])
   useOnce(() => searchStops(), !stopId && !loading && !data)
 
   return (

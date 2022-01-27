@@ -20,11 +20,10 @@ const DetailsContent = () => {
       stops: { data: stopsData, loading: stopsLoading },
     } = useContext(MapContext)
 
-  const fetchStop = useCallback(() => {
-    if (stopsData?.length === 1 && stopsData?.[0]?.id === stopId) return
-    if (stopsLoading) return
-    getStop(stopId)
-  }, [getStop, stopId, stopsData, stopsLoading])
+  const fetchStop = useCallback(
+    () => ((stopsData?.length === 1 && stopsData?.[0]?.id === stopId) || stopsLoading ? null : getStop(stopId)),
+    [getStop, stopId, stopsData, stopsLoading]
+  )
 
   useEffect(() => getStopDetails(stopId), [getStopDetails, stopId])
   useEffect(() => fetchStop(), [fetchStop])

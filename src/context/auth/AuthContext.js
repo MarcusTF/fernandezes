@@ -1,22 +1,25 @@
 import { useMutation } from "graphql-hooks"
 import React, { createContext, useCallback, useReducer } from "react"
-import { LOG_IN, SIGN_UP } from "../graphql/Mutations"
+import { LOG_IN, REFRESH, SIGN_UP } from "../graphql/Mutations"
 import { default as AuthReducer, initialState } from "./AuthReducer"
 import { graphQLClientContext } from ".."
+import { useImmerReducer } from "use-immer"
 
 // KEYS
 export const keys = {
   LOG_IN: "LOG_IN",
   SIGN_UP: "SIGN_UP",
+  REFRESH: "REFRESH",
 }
 
 export const AuthContext = createContext(initialState)
 
 export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(AuthReducer, initialState)
+  const [state, dispatch] = useImmerReducer(AuthReducer, initialState)
 
   const [authenticate] = useMutation(LOG_IN)
   const [register] = useMutation(SIGN_UP)
+  const [refresh] = useMutation(REFRESH)
 
   const logIn = useCallback(
     async credentials => {
@@ -30,13 +33,14 @@ export const AuthProvider = ({ children }) => {
         const res = await authenticate({ variables: { ...credentials } })
         if (res?.error) return dispatch({ type: keys.LOG_IN, payload: { error: res?.error, loading: false } })
         dispatch({ type: keys.LOG_IN, payload: { user: res?.data?.login?.user, loading: false, error: undefined } })
-        return graphQLClientContext.setHeader("Authorization", res?.data?.login?.user?.authToken)
+        return graphQLClientContext.setHeader("Authorization", `Bearer ${res?.data?.login?.user?.authToken}`)
       } catch (error) {
         dispatch({ type: keys.LOG_IN, payload: { loading: false, error } })
       }
     },
-    [authenticate]
+    [authenticate, dispatch]
   )
+
   const signUp = useCallback(
     async userInfo => {
       dispatch({ type: keys.SIGN_UP, payload: { data: undefined, loading: true, error: undefined } })
@@ -52,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         dispatch({ type: keys.SIGN_UP, payload: { data: undefined, loading: false, error } })
       }
     },
-    [register]
+    [dispatch, register]
   )
 
   const pullUserFromStorage = useCallback(() => {
@@ -62,11 +66,31 @@ export const AuthProvider = ({ children }) => {
       const user = storage ? JSON?.parse?.(storage) : remembered ? JSON?.parse?.(remembered) : null
       if (!user) return
       dispatch({ type: keys.LOG_IN, payload: { user, loading: false, error: undefined } })
-      return graphQLClientContext.setHeader("Authorization", user?.authToken)
+      return graphQLClientContext.setHeader("Authorization", `Bearer ${user?.authToken}`)
     } catch (error) {
       dispatch({ type: keys.LOG_IN, payload: { loading: false, error } })
     }
-  }, [])
+  }, [dispatch])
+
+  const refreshToken = useCallback(
+    async refreshToken => {
+      dispatch({ type: keys.LOG_IN, payload: { authToken: undefined, loading: true, error: undefined } })
+      try {
+        const res = await refresh({ variables: { refreshToken } })
+        if (res?.error)
+          return dispatch({ type: keys.LOG_IN, payload: { authToken: undefined, error: res?.error, loading: false } })
+        console.log("token refreshed :)")
+        dispatch({
+          type: keys.LOG_IN,
+          payload: { authToken: res?.data?.refreshJwtAuthToken?.authToken, loading: false, error: undefined },
+        })
+        return graphQLClientContext.setHeader("Authorization", `Bearer ${res?.data?.refreshJwtAuthToken?.authToken}`)
+      } catch (error) {
+        dispatch({ type: keys.LOG_IN, payload: { authToken: undefined, loading: false, error } })
+      }
+    },
+    [dispatch, refresh]
+  )
 
   const logOut = useCallback(async () => {
     dispatch({ type: keys.LOG_IN, payload: { user: null, loading: false, error: undefined } })
@@ -83,6 +107,7 @@ export const AuthProvider = ({ children }) => {
         pullUserFromStorage,
         logOut,
         signUp,
+        refreshToken,
       }}
     >
       {children}

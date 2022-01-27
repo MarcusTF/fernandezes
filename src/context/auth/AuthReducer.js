@@ -11,22 +11,37 @@ export const initialState = {
     loading: false,
     errors: undefined,
   },
+  refresh: {
+    authToken: undefined,
+    loading: false,
+    errors: undefined,
+  },
   user: null,
   panel: null,
 }
 
-export const AuthReducer = (state, action) => {
-  const { payload } = action
-  switch (action.type) {
-    case keys.LOG_IN: {
+export const AuthReducer = (draft, { type, payload }) => {
+  switch (type) {
+    case keys.LOG_IN:
       const { user, ...rest } = payload
-      return { ...state, user, authentication: { ...rest } }
-    }
-    case keys.SIGN_UP: {
-      return { ...state, registration: { ...payload } }
+      draft.user = user
+      return void (draft.authentication = rest)
+    case keys.SIGN_UP:
+      return void (draft.registration = payload)
+    case keys.REFRESH: {
+      const { authToken, errors } = payload
+      if (authToken) {
+        draft.user.authToken = authToken
+        return void (draft.refresh = initialState.refresh)
+      } else if (errors) {
+        localStorage.clear()
+        sessionStorage.clear()
+        draft.user = null
+        return void (draft.refresh = payload)
+      } else return void (draft.refresh = payload)
     }
     default:
-      return state
+      return draft
   }
 }
 

@@ -18,13 +18,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      try {
-        if (remember) localStorage?.setItem?.("_the_fernandezes_remember_me", JSON.stringify(user))
-        sessionStorage?.setItem?.("_the_fernandezes_session", JSON.stringify(user))
-        nav("/")
-      } catch (err) {
-        console.error(err)
-      }
+      if (remember) window.localStorage.setItem("_the_fernandezes_remember_me", JSON.stringify(user))
+      window.sessionStorage.setItem("_the_fernandezes_session", JSON.stringify(user))
+      nav("/")
     }
   }, [nav, remember, user])
 
