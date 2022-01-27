@@ -1,5 +1,6 @@
 import { useManualQuery } from "graphql-hooks"
 import React, { createContext, useCallback, useReducer } from "react"
+import { useImmerReducer } from "use-immer"
 import { GET_STOP_DETAILS } from "../graphql/Queries"
 import { default as DetailsReducer, initialState } from "./DetailsReducer"
 
@@ -13,7 +14,7 @@ export const keys = {
 export const DetailsContext = createContext(initialState)
 
 export const DetailsProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(DetailsReducer, initialState)
+  const [state, dispatch] = useImmerReducer(DetailsReducer, initialState)
 
   const [getStopById] = useManualQuery(GET_STOP_DETAILS)
 

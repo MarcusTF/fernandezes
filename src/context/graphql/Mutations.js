@@ -10,8 +10,15 @@ mutation LogIn($password: String = "", $username: String = "") {
         registeredDate
         username
         userId
-        capabilities
+        roles {
+          nodes {
+            capabilities
+            name
+            displayName
+          }
+        }
         authToken: jwtAuthToken
+        refreshToken: jwtRefreshToken
       }
     }
   }
@@ -24,6 +31,13 @@ export const SIGN_UP = `
       user {
         email
       }
+    }
+  }
+`
+export const REFRESH = `
+  mutation refreshToken($refreshToken: String = "") {
+    refreshJwtAuthToken(input: { jwtRefreshToken: $refreshToken }) {
+      authToken
     }
   }
 `

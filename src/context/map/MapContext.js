@@ -1,12 +1,13 @@
 import { useManualQuery } from "graphql-hooks"
 import { Marker } from "pigeon-maps"
-import React, { createContext, useCallback, useContext, useReducer } from "react"
+import React, { createContext, useCallback, useContext, useMemo, useReducer } from "react"
 import { colorPicker, getBounds } from "../../utils/utils"
 import { GET_ALL_STOPS, GET_STOP } from "../graphql/Queries"
 import { default as MapReducer, initialState } from "./MapReducer"
 import geoViewport from "@mapbox/geo-viewport"
-import { DetailsContext } from ".."
+import { AuthContext, DetailsContext } from ".."
 import { useNavigate } from "react-router-dom"
+import { useStoredUser } from "../../utils/hooks"
 
 // KEYS
 export const keys = {
@@ -21,6 +22,14 @@ export const MapContext = createContext(initialState)
 
 export const MapProvider = ({ children }) => {
   const [state, dispatch] = useReducer(MapReducer, initialState)
+
+  const user = useStoredUser(),
+    kithOrKin = useMemo(
+      () =>
+        !!user?.roles?.nodes?.filter?.(role => ["Fernandez", "Family", "Friends"].includes?.(role?.displayName))
+          ?.length,
+      [user?.roles?.nodes]
+    )
 
   const { getStopDetails } = useContext(DetailsContext)
 
@@ -64,7 +73,7 @@ export const MapProvider = ({ children }) => {
                 }}
                 key={stop?.id}
                 payload={stop?.id}
-                color={colorPicker(stop)}
+                color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
                 anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
               />,
             ],
@@ -79,7 +88,7 @@ export const MapProvider = ({ children }) => {
         dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: true, error } })
       }
     },
-    [getOneStop, navigate]
+    [getOneStop, kithOrKin, navigate]
   )
 
   const searchStops = useCallback(
@@ -122,7 +131,7 @@ export const MapProvider = ({ children }) => {
                   onClick={() => handleClick(stop)}
                   key={stop?.id}
                   payload={stop?.id}
-                  color={colorPicker(stop)}
+                  color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
                   anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
                 />,
               ],
@@ -141,7 +150,7 @@ export const MapProvider = ({ children }) => {
             onClick={() => handleClick(stop)}
             payload={stop?.id}
             key={stop?.id}
-            color={colorPicker(stop)}
+            color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
             anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
           />
         ))
@@ -160,7 +169,7 @@ export const MapProvider = ({ children }) => {
         dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: false, error } })
       }
     },
-    [getAllStops, getStopDetails, navigate]
+    [getAllStops, getStopDetails, kithOrKin, navigate]
   )
 
   return (
