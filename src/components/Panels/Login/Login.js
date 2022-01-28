@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { useContext, useState, useEffect } from "react"
 import { Field, Form } from "react-final-form"
 import Lottie from "react-lottie-player"
@@ -18,8 +19,15 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      if (remember) window.localStorage.setItem("_the_fernandezes_remember_me", JSON.stringify(user))
-      window.sessionStorage.setItem("_the_fernandezes_session", JSON.stringify(user))
+      if (remember)
+        localStorage.setItem(
+          "_the_fernandezes_remember_me",
+          JSON.stringify({ ...user, tokenCreated: dayjs().toISOString() })
+        )
+      sessionStorage.setItem(
+        "_the_fernandezes_session",
+        JSON.stringify({ ...user, tokenCreated: dayjs().toISOString() })
+      )
       nav("/")
     }
   }, [nav, remember, user])
