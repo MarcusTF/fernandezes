@@ -4,6 +4,7 @@ import { LOG_IN, REFRESH, SIGN_UP } from "../graphql/Mutations"
 import { default as AuthReducer, initialState } from "./AuthReducer"
 import { graphQLClientContext } from ".."
 import { useImmerReducer } from "use-immer"
+import produce from "immer"
 
 // KEYS
 export const keys = {
@@ -85,19 +86,23 @@ export const AuthProvider = ({ children }) => {
           try {
             const session = sessionStorage.getItem("_the_fernandezes_session"),
               remembered = localStorage.getItem("_the_fernandezes_remember_me")
+
             if (!session && !remembered) return res1
-            const parsed = session ? JSON.parse(session) : JSON.parse(remembered)
-            const newToken = await refreshToken(parsed?.refreshToken)
-            if (newToken?.errors) return res1
-            const authToken = newToken?.data?.refreshJwtAuthToken?.authToken
-            const [res2, notThisSh_tAgain] = await fetchParse(url, {
-              ...options,
-              headers: { ...options.headers, authorization: `Bearer ${authToken}` },
-            })
+
+            const parsed = session ? JSON.parse(session) : JSON.parse(remembered),
+              refresh = await refreshToken(parsed?.refreshToken)
+
+            if (refresh?.errors) return res1
+
+            const authToken = refresh?.data?.refreshJwtAuthToken?.authToken,
+              newOptions = produce(options, draft => void (draft.headers.authorization = `Bearer ${authToken}`)),
+              [res2, notThisSh_tAgain] = await fetchParse(url, newOptions)
+
             if (notThisSh_tAgain === "The iss do not match with this server") return res1
             if (session) sessionStorage.setItem("_the_fernandezes_session", JSON.stringify({ ...parsed, authToken }))
             if (remembered)
               localStorage.setItem("_the_fernandezes_remember_me", JSON.stringify({ ...parsed, authToken }))
+
             return res2
           } catch (err) {
             return res1
