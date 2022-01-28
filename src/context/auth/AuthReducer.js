@@ -12,7 +12,6 @@ export const initialState = {
     errors: undefined,
   },
   refresh: {
-    authToken: undefined,
     loading: false,
     errors: undefined,
   },
