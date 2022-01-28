@@ -5,6 +5,7 @@ import { default as AuthReducer, initialState } from "./AuthReducer"
 import { graphQLClientContext } from ".."
 import { useImmerReducer } from "use-immer"
 import produce from "immer"
+import dayjs from "dayjs"
 
 // KEYS
 export const keys = {
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     [dispatch, refresh]
   )
 
-  const logOut = useCallback(async () => {
+  const logOut = useCallback(() => {
     dispatch({ type: keys.LOG_IN, payload: { user: null, loading: false, error: undefined } })
     graphQLClientContext.setHeader("authorization", null)
     sessionStorage?.clear?.()
@@ -89,8 +90,14 @@ export const AuthProvider = ({ children }) => {
 
             if (!session && !remembered) return res1
 
-            const parsed = session ? JSON.parse(session) : JSON.parse(remembered),
-              refresh = await refreshToken(parsed?.refreshToken)
+            const parsed = session ? JSON.parse(session) : JSON.parse(remembered)
+
+            if (dayjs(parsed?.tokenCreated).add(7, "day").isBefore(dayjs())) {
+              logOut()
+              return res1
+            }
+
+            const refresh = await refreshToken(parsed?.refreshToken)
 
             if (refresh?.errors) return res1
 
@@ -113,7 +120,7 @@ export const AuthProvider = ({ children }) => {
         return new Response(JSON.stringify(e))
       }
     },
-    [refreshToken]
+    [logOut, refreshToken]
   )
 
   const logIn = useCallback(
