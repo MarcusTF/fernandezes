@@ -1,0 +1,50 @@
+@mixin text-outline($color) {
+  text-shadow: $color 1px 1px, $color -1px 1px, $color 1px -1px, $color -1px -1px;
+}
+
+.marker {
+  transform: translate(-50%, calc(-100% - 5px));
+  cursor: pointer;
+  //   background-color: rgba(0, 0, 255, 0.308);
+  position: absolute;
+  &-title {
+    text-align: left;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    z-index: 100;
+    .marker-body {
+      width: 200px;
+      height: 150px;
+      transform-origin: center;
+      color: white;
+      border-radius: 6px;
+    }
+  }
+  &-body {
+    height: 30px;
+    width: 30px;
+    transition: 200ms;
+    overflow: hidden;
+    padding: 10px;
+    background-color: #555;
+    border-radius: 30px;
+    color: transparent;
+    &:after {
+      //   background-color: green;
+      border-color: #555 transparent transparent transparent;
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-top: -4px;
+      margin-left: -10px;
+      border-width: 10px;
+      border-style: solid;
+    }
+  }
+}

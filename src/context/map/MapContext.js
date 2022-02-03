@@ -1,5 +1,5 @@
 import { useManualQuery } from "graphql-hooks"
-import { Marker } from "pigeon-maps"
+// import { Marker } from "pigeon-maps"
 import React, { createContext, useCallback, useContext, useMemo, useReducer } from "react"
 import { colorPicker, getBounds } from "../../utils/utils"
 import { GET_ALL_STOPS, GET_STOP } from "../graphql/Queries"
@@ -8,6 +8,7 @@ import geoViewport from "@mapbox/geo-viewport"
 import { AuthContext, DetailsContext } from ".."
 import { useNavigate } from "react-router-dom"
 import { useStoredUser } from "../../utils/hooks"
+import Marker from "../../components/Marker/Marker"
 
 // KEYS
 export const keys = {
@@ -67,15 +68,17 @@ export const MapProvider = ({ children }) => {
             data: [res?.data?.stop],
             loading: false,
             markers: [
-              <Marker
-                onClick={() => {
-                  navigate(`stop/${stop?.id}`)
-                }}
-                key={stop?.id}
-                payload={stop?.id}
-                color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
-                anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
-              />,
+              <Marker anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]} data={stop} />,
+
+              // <Marker
+              //   onClick={() => {
+              //     navigate(`stop/${stop?.id}`)
+              //   }}
+              //   key={stop?.id}
+              //   payload={stop?.id}
+              //   color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
+              //   anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
+              // />,
             ],
           },
         })
@@ -127,13 +130,15 @@ export const MapProvider = ({ children }) => {
               error: undefined,
               loading: false,
               markers: [
-                <Marker
-                  onClick={() => handleClick(stop)}
-                  key={stop?.id}
-                  payload={stop?.id}
-                  color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
-                  anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
-                />,
+                <Marker anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]} data={stop} />,
+
+                // <Marker
+                //   onClick={() => handleClick(stop)}
+                //   key={stop?.id}
+                //   payload={stop?.id}
+                //   color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
+                //   anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
+                // />,
               ],
             },
           })
@@ -145,15 +150,17 @@ export const MapProvider = ({ children }) => {
           return
         }
 
-        const markers = data?.map?.(stop => (
-          <Marker
-            onClick={() => handleClick(stop)}
-            payload={stop?.id}
-            key={stop?.id}
-            color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
-            anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
-          />
-        ))
+        const markers = data?.map?.(
+          stop => <Marker anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]} data={stop} />
+
+          // <Marker
+          //   onClick={() => handleClick(stop)}
+          //   payload={stop?.id}
+          //   key={stop?.id}
+          //   color={kithOrKin ? colorPicker(stop) : "#c20e0e"}
+          //   anchor={[stop?.location?.coords?.lat, stop?.location?.coords?.lng]}
+          // />
+        )
         const bounds = getBounds(data?.map?.(stop => stop?.location?.coords))
 
         const { center, zoom } = geoViewport.viewport(bounds, [

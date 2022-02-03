@@ -19,6 +19,9 @@ export const GET_ALL_STOPS = `
         metadata {
           home
         }
+        text {
+          description
+        }
       }
     }
   }

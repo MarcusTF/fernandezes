@@ -20,7 +20,7 @@ export const DetailsProvider = ({ children }) => {
 
   const closePanel = useCallback(() => {
     dispatch({ type: keys.CLOSE_PANEL })
-  }, [])
+  }, [dispatch])
 
   const getStopDetails = useCallback(
     async id => {
@@ -35,7 +35,7 @@ export const DetailsProvider = ({ children }) => {
         dispatch({ type: keys.OPEN_STOP, payload: { data: undefined, loading: false, error } })
       }
     },
-    [closePanel, getStopById]
+    [closePanel, dispatch, getStopById]
   )
 
   const openPanel = useCallback(
@@ -43,7 +43,7 @@ export const DetailsProvider = ({ children }) => {
       getStopDetails(null)
       dispatch({ type: keys.OPEN_PANEL, payload: component })
     },
-    [getStopDetails]
+    [dispatch, getStopDetails]
   )
 
   return (
