@@ -1,29 +1,20 @@
-import React, { useEffect } from "react"
-import ReactDOM from "react-dom"
+import { useContext } from "react"
+import { MapContext } from "context/map"
+import { Route, Routes } from "react-router-dom"
+import { DetailsContent } from "components/Details"
+import { MapContainer } from "components/MapContainer"
+import { About, Login, Profile, SignUp } from "components/Panels"
 
-import { MapContainer } from "./components/MapContainer"
+import Header from "components/Header/Header"
+import Loading from "components/Loading/Loading"
+import PrivateRoute from "utils/router/PrivateRoute"
 
 import "./App.scss"
-import { useContext } from "react"
-import { MapContext } from "./context/map"
-import Header from "./components/Header/Header"
-import Loading from "./components/Loading/Loading"
-import { Route, Routes } from "react-router-dom"
-import { DetailsContent } from "./components/Details"
-import { About, Login, Profile, SignUp } from "./components/Panels"
-import PrivateRoute from "./utils/router/PrivateRoute"
-import { AuthContext } from "./context"
-
-if (process.env.NODE_ENV !== "production") {
-  const axe = require?.("@axe-core/react")
-  axe?.(React, ReactDOM, 1000)
-}
 
 function App() {
   const {
-      stops: { loading },
-    } = useContext(MapContext),
-    { user } = useContext(AuthContext)
+    stops: { loading },
+  } = useContext(MapContext)
 
   return (
     <div className='App'>

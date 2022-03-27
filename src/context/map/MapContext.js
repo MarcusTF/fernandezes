@@ -1,13 +1,13 @@
 import { useManualQuery } from "graphql-hooks"
 import { Marker } from "pigeon-maps"
 import React, { createContext, useCallback, useContext, useMemo, useReducer } from "react"
-import { colorPicker, getBounds } from "../../utils/utils"
+import { colorPicker, getBounds } from "utils/utils"
 import { GET_ALL_STOPS, GET_STOP } from "../graphql/Queries"
 import { default as MapReducer, initialState } from "./MapReducer"
 import geoViewport from "@mapbox/geo-viewport"
-import { AuthContext, DetailsContext } from ".."
+import { DetailsContext } from "context"
 import { useNavigate } from "react-router-dom"
-import { useStoredUser } from "../../utils/hooks"
+import { useStoredUser } from "utils/hooks"
 
 // KEYS
 export const keys = {
