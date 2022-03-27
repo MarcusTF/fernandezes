@@ -15,8 +15,8 @@ import PrivateRoute from "./utils/router/PrivateRoute"
 import { AuthContext } from "./context"
 
 if (process.env.NODE_ENV !== "production") {
-  const axe = require("@axe-core/react")
-  axe(React, ReactDOM, 1000)
+  const axe = require?.("@axe-core/react")
+  axe?.(React, ReactDOM, 1000)
 }
 
 function App() {
