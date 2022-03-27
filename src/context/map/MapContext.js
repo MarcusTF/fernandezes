@@ -1,14 +1,14 @@
 import { useManualQuery } from "graphql-hooks"
 // import { Marker } from "pigeon-maps"
 import React, { createContext, useCallback, useContext, useMemo, useReducer } from "react"
-import { colorPicker, getBounds } from "../../utils/utils"
+import { getBounds } from "utils/utils"
 import { GET_ALL_STOPS, GET_STOP } from "../graphql/Queries"
 import { default as MapReducer, initialState } from "./MapReducer"
 import geoViewport from "@mapbox/geo-viewport"
-import { AuthContext, DetailsContext } from ".."
+import { DetailsContext } from ".."
 import { useNavigate } from "react-router-dom"
-import { useStoredUser } from "../../utils/hooks"
-import Marker from "../../components/Marker/Marker"
+import { useStoredUser } from "utils/hooks"
+import Marker from "components/Marker/Marker"
 
 // KEYS
 export const keys = {
@@ -91,7 +91,7 @@ export const MapProvider = ({ children }) => {
         dispatch({ type: keys.SET_STOPS, payload: { data: undefined, loading: true, error } })
       }
     },
-    [getOneStop, kithOrKin, navigate]
+    [getOneStop, navigate]
   )
 
   const searchStops = useCallback(

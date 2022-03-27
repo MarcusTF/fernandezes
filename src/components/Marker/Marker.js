@@ -1,7 +1,6 @@
-import { PinIcon } from "../../assets/vector"
 import "./Marker.scss"
 
-const Marker = ({ left, top, anchor, children, data }) => {
+const Marker = ({ left, top, children, data }) => {
   return (
     <div style={{ left, top }} className={`marker`}>
       <div className='marker-body'>

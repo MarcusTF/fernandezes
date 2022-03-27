@@ -1,6 +1,3 @@
-import React, { useEffect } from "react"
-import ReactDOM from "react-dom"
-
 import { MapContainer } from "./components/MapContainer"
 
 import { useContext } from "react"
@@ -13,11 +10,6 @@ import Header from "./components/Header/Header"
 import Loading from "./components/Loading/Loading"
 
 import "./App.scss"
-
-if (process.env.NODE_ENV !== "production") {
-  const axe = require("@axe-core/react")
-  axe(React, ReactDOM, 1000)
-}
 
 function App() {
   const {
